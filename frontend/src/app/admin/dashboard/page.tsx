@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useRouter } from 'next/navigation';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
 
@@ -16,17 +15,9 @@ interface Appointment {
   status: string;
 }
 
-interface Service {
-  name: string;
-  duration: number;
-  price: number;
-}
-
 export default function AdminDashboardPage() {
   const [appointments, setAppointments] = useState<Appointment[]>([]);
-  const [_services, setServices] = useState<Service[]>([]);
   const [loading, setLoading] = useState(true);
-  const router = useRouter();
 
   const fetchAppointments = async () => {
     try {
