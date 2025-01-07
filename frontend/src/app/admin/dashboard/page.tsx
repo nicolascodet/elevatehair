@@ -53,50 +53,70 @@ export default function AdminDashboardPage() {
   };
 
   if (loading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="min-h-screen bg-gray-900 text-white flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-white"></div>
+      </div>
+    );
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-8">Admin Dashboard</h1>
-      <div className="bg-white shadow-lg rounded-lg p-6">
-        <h2 className="text-2xl font-semibold mb-4">Appointments</h2>
-        <div className="space-y-4">
-          {appointments.map((appointment) => (
-            <div
-              key={appointment.id}
-              className="border rounded-lg p-4 flex justify-between items-center"
-            >
-              <div>
-                <p className="font-semibold">{appointment.client_name}</p>
-                <p className="text-sm text-gray-600">{appointment.email}</p>
-                <p className="text-sm text-gray-600">{appointment.phone}</p>
-                <p className="text-sm text-gray-600">
-                  Service: {appointment.service_type}
-                </p>
-                <p className="text-sm text-gray-600">
-                  Date: {new Date(appointment.datetime).toLocaleString()}
-                </p>
-                <p className="text-sm text-gray-600">
-                  Status: {appointment.status}
-                </p>
-              </div>
-              <div className="flex space-x-2">
-                <button
-                  onClick={() => handleApprove(appointment.id.toString())}
-                  className="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 transition-colors"
+    <div className="min-h-screen bg-gray-900 text-white px-4 py-8">
+      <div className="container mx-auto max-w-4xl">
+        <h1 className="text-4xl font-bold mb-8 text-center bg-gradient-to-r from-gray-100 to-gray-300 bg-clip-text text-transparent">
+          Admin Dashboard
+        </h1>
+        <div className="bg-gray-800 rounded-lg shadow-xl p-6">
+          <h2 className="text-2xl font-semibold mb-6 text-gray-100">Appointments</h2>
+          <div className="space-y-4">
+            {appointments.length === 0 ? (
+              <p className="text-gray-400 text-center py-4">No appointments found</p>
+            ) : (
+              appointments.map((appointment) => (
+                <div
+                  key={appointment.id}
+                  className="bg-gray-700 rounded-lg p-4 sm:flex justify-between items-start space-y-4 sm:space-y-0"
                 >
-                  Approve
-                </button>
-                <button
-                  onClick={() => handleReject(appointment.id.toString())}
-                  className="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 transition-colors"
-                >
-                  Reject
-                </button>
-              </div>
-            </div>
-          ))}
+                  <div className="space-y-2">
+                    <p className="font-semibold text-gray-100">{appointment.client_name}</p>
+                    <p className="text-sm text-gray-300">{appointment.email}</p>
+                    <p className="text-sm text-gray-300">{appointment.phone}</p>
+                    <p className="text-sm text-gray-300">
+                      Service: {appointment.service_type}
+                    </p>
+                    <p className="text-sm text-gray-300">
+                      Date: {new Date(appointment.datetime).toLocaleString()}
+                    </p>
+                    <p className="text-sm">
+                      <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                        appointment.status === 'approved' 
+                          ? 'bg-green-900 text-green-100' 
+                          : appointment.status === 'rejected'
+                          ? 'bg-red-900 text-red-100'
+                          : 'bg-yellow-900 text-yellow-100'
+                      }`}>
+                        {appointment.status.charAt(0).toUpperCase() + appointment.status.slice(1)}
+                      </span>
+                    </p>
+                  </div>
+                  <div className="flex flex-col sm:flex-row gap-2">
+                    <button
+                      onClick={() => handleApprove(appointment.id.toString())}
+                      className="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 transition-colors w-full sm:w-auto"
+                    >
+                      Approve
+                    </button>
+                    <button
+                      onClick={() => handleReject(appointment.id.toString())}
+                      className="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 transition-colors w-full sm:w-auto"
+                    >
+                      Reject
+                    </button>
+                  </div>
+                </div>
+              ))
+            )}
+          </div>
         </div>
       </div>
     </div>
